@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CORAL.EXE — acceso al manglar</title>
+<style>
+:root{--bg:#080d0a;--moss:#253a29;--red:#8f151b;--text:#d1d4b0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Consolas,monospace;overflow-x:hidden}
+.scene{min-height:100vh;position:relative;overflow:hidden;background:radial-gradient(ellipse at center,#203321,#080d0a 72%);padding:25px 14px 90px}
+header{text-align:center;padding:28px 0 0;position:relative;z-index:2}h1{font-size:clamp(2rem,8vw,5rem);font-weight:400;letter-spacing:.17em;margin:0;text-shadow:0 0 22px #76874b55}.sub{font-size:11px;letter-spacing:.2em;color:#8c9679}
+.meta{position:absolute;top:12px;left:14px;right:14px;display:flex;justify-content:space-between;font-size:10px;color:#78836d;letter-spacing:.1em}
+.stage{position:relative;width:min(100%,950px);height:470px;margin:0 auto}
+.roots{position:absolute;inset:0;width:100%;height:100%}
+.root{fill:none;stroke:#30412d;stroke-width:16;stroke-linecap:round}.thin{fill:none;stroke:#63452d;stroke-width:5;stroke-linecap:round}.vein{fill:none;stroke:#701d22;stroke-width:3}
+.num{position:absolute;z-index:2;min-width:44px;min-height:44px;border:0;background:transparent;color:transparent;font-weight:bold;font-size:17px;text-shadow:0 0 8px #000}
+.num:focus-visible,.num.found{color:#d1d4b0;text-shadow:0 0 12px currentColor;outline:1px dashed #a6ad83;border-radius:50%}
+.n8{left:12%;top:28%}.n21{left:29%;top:62%}.n5{right:28%;top:24%}.n3{right:12%;top:50%}.n15{left:47%;top:40%}
+.hint{text-align:center;color:#78836d;font-size:11px;line-height:1.7;position:absolute;bottom:0;left:5%;width:90%}
+.panel{position:relative;z-index:3;width:min(92vw,420px);margin:0 auto;border:1px solid #47553d;padding:18px;background:#080d0aee;box-shadow:0 0 25px #0008}
+h2{font-size:13px;font-weight:400;letter-spacing:.13em;color:#b6bd91;margin:0 0 12px}.panel p{font-size:11px;color:#929a80;line-height:1.6}
+form{display:flex;gap:8px}input{flex:1;min-width:0;background:#050806;border:1px solid #4a5842;color:var(--text);padding:12px;text-transform:lowercase;font:inherit}
+button,.action{font:inherit;cursor:pointer}.action{border:1px solid #667452;background:#18251a;color:var(--text);padding:11px}
+#status{min-height:18px}.utility{position:fixed;right:16px;bottom:14px;z-index:6;text-align:center}.rock{width:60px;height:45px;border:1px solid #606653;border-radius:45% 52% 38% 40%;background:radial-gradient(ellipse at 35% 25%,#58604a,#20271d 55%,#0b100c);box-shadow:0 8px 16px #000a}.rocklabel{font-size:9px;color:#8b9478}
+.backdrop{display:none;position:fixed;inset:0;z-index:10;background:#020403e8;place-items:center;padding:16px}.backdrop.open{display:grid}.paper{position:relative;background:#c9c2a4;color:#28291e;padding:22px;width:min(92vw,420px);border:1px solid #77745b;box-shadow:0 0 50px #000;transform:rotate(-1deg)}.paper h2{color:#363729;border-bottom:1px solid #88836a;padding-bottom:10px}.close{position:absolute;right:8px;top:6px;background:none;border:0;color:#28291e;font-size:22px}.stains{display:flex;justify-content:space-around;gap:7px;margin:20px 0}.stain{width:38px;height:45px;border-radius:55% 45% 50% 40%;box-shadow:inset 3px 4px 7px #0003;border:1px solid #554d3866}.brown{background:#785036}.orange{background:#e37c25}.yellow{background:#e7cf38}.violet{background:#7550a1}.green{background:#467a3c}.legend{text-align:center;font-size:10px}
+#unlock{display:none;text-align:center;margin:14px auto;width:min(92vw,420px);border:1px solid #6b201f;padding:18px;background:#100908;position:relative;z-index:3}#unlock.show{display:block}#unlock a{display:inline-block;color:var(--text);padding:12px;border:1px solid #75815b;text-decoration:none}
+body.attack .scene{animation:flash .18s steps(2,end) 8}body.attack .roots{filter:drop-shadow(5px 0 #e21c28) drop-shadow(-5px 0 #4e0c10)}@keyframes flash{0%{background:#080d0a}25%{background:#850710}50%{background:#f0d4d1}75%{background:#240307}100%{background:#080d0a}}
+@media(max-width:600px){.stage{height:410px}.meta{font-size:9px}.scene{padding-left:8px;padding-right:8px}.num{font-size:15px}.utility{right:8px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<div class="scene">
+<div class="meta"><span>CORAL.EXE / BUILD 00.01</span><span>ZONA: MANGLAR<br>ESTADO: VIVO</span></div>
+<header><h1>CORAL.EXE</h1><p class="sub">NO TODO LO QUE RESPONDE ESTÁ VIVO</p></header>
+<main>
+<section class="stage" aria-label="Manglar interactivo">
+<!-- ARTE PROVISIONAL: sustituye este SVG por tu propia ilustración de raíces. -->
+<svg class="roots" viewBox="0 0 950 470" preserveAspectRatio="none" aria-hidden="true">
+<g class="root"><path d="M0 80C130 130 80 220 210 260S300 370 260 470"/><path d="M0 300C130 270 180 330 350 470"/><path d="M950 60C820 120 900 210 760 260S680 370 720 470"/><path d="M950 300C830 280 780 360 640 470"/><path d="M420 470C450 370 400 310 485 250S560 140 520 0"/><path d="M580 470C550 370 620 310 550 250S430 140 470 0"/></g>
+<g class="thin"><path d="M210 260C170 210 130 200 110 150M210 260C270 230 300 250 320 290M760 260C810 210 850 220 890 170M760 260C710 220 680 245 665 280M485 250C400 220 380 175 360 120M485 250C600 205 620 160 635 115"/></g>
+<g class="vein"><path d="M0 160C160 180 150 280 300 320S410 400 400 470M950 160C790 180 800 280 650 320S540 400 550 470M500 470C470 370 520 320 500 260S500 140 500 0"/></g>
+<path d="M475 165C520 150 560 180 560 220C560 255 520 280 480 267C440 280 400 250 405 215C410 180 440 160 475 165Z" fill="#281517" stroke="#6e2928" stroke-width="3"/><path d="M440 215Q480 190 520 218Q485 242 450 230Z" fill="#100c0b" stroke="#a13b36" stroke-width="2"/>
+</svg>
+<button class="num n8" data-number="8" data-color="brown" aria-label="Número marrón">8</button>
+<button class="num n21" data-number="21" data-color="orange" aria-label="Número naranja">21</button>
+<button class="num n5" data-number="5" data-color="yellow" aria-label="Número amarillo">5</button>
+<button class="num n3" data-number="3" data-color="violet" aria-label="Número violeta">3</button>
+<button class="num n15" data-number="15" data-color="green" aria-label="Número verde">15</button>
+<p class="hint">Busca donde la raíz cambia de color. Cinco números. Cinco manchas.<br>El orden no está escrito en los árboles.</p>
+</section>
+<section class="panel"><h2>TERMINAL / ENTRADA DE TEXTO</h2><p>Encuentra los números ocultos y consulta el papel atrapado bajo la piedra. El color recuerda lo que el número olvida.</p>
+<form id="form" autocomplete="off"><input id="answer" maxlength="24" aria-label="Palabra de acceso" placeholder="escribe la palabra..." spellcheck="false"><button class="action" type="submit">PROBAR</button></form><p id="status" role="status">ESPERANDO ENTRADA...</p></section>
+<section id="unlock"><h2>ACCESO CONCEDIDO</h2><p>La raíz se aparta. El manglar te ha visto.</p><a href="manglar.html">ENTRAR AL MANGLAR →</a></section>
+</main>
+<div class="utility"><button class="rock" id="rock" aria-label="Examinar la piedra" title="Examinar la piedra"></button><div class="rocklabel">¿BAJO LA PIEDRA?</div></div>
+</div>
+<div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="paper-title"><div class="paper"><button class="close" id="close" aria-label="Cerrar">×</button><h2 id="paper-title">DOCUMENTO HÚMEDO / FRAGMENTO 01</h2><p>«No leas las raíces de izquierda a derecha. Sigue las manchas. El color recuerda lo que el número olvida».</p><div class="stains" aria-label="Orden de colores"><span class="stain brown" title="Marrón"></span><span class="stain orange" title="Naranja"></span><span class="stain yellow" title="Amarillo"></span><span class="stain violet" title="Violeta"></span><span class="stain green" title="Verde"></span></div><p class="legend">MARRÓN → NARANJA → AMARILLO → VIOLETA → VERDE</p><p>La tinta no se ha secado. La hoja parece tibia.</p></div></div>
+<script>
+(()=>{
+const buttons=[...document.querySelectorAll('.num')],found=new Set(),status=document.getElementById('status');
+const colors={brown:'#a47a52',orange:'#e98b36',yellow:'#e6d65c',violet:'#a78acb',green:'#8bb56b'};
+buttons.forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.number;found.add(n);b.classList.add('found');b.style.color=colors[b.dataset.color];status.textContent=`RAÍZ REGISTRADA: ${n}. ${found.size}/5 señales localizadas.`;if(found.size===5)status.textContent='5/5 SEÑALES. El orden todavía importa.';}));
+const backdrop=document.getElementById('backdrop'),rock=document.getElementById('rock');
+rock.addEventListener('click',()=>{backdrop.classList.add('open');document.getElementById('close').focus()});
+function closePaper(){backdrop.classList.remove('open');rock.focus()}
+document.getElementById('close').addEventListener('click',closePaper);
+backdrop.addEventListener('click',e=>{if(e.target===backdrop)closePaper()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&backdrop.classList.contains('open'))closePaper()});
+function scream(){
+/* Grito sintético provisional: el sistema lo imita para manipular al jugador. */
+try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;const c=new C(),o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter(),t=c.currentTime;o.type='sawtooth';o.frequency.setValueAtTime(720,t);o.frequency.exponentialRampToValueAtTime(145,t+.62);o.frequency.setValueAtTime(490,t+.7);o.frequency.exponentialRampToValueAtTime(95,t+1.15);f.type='bandpass';f.frequency.setValueAtTime(1200,t);f.frequency.exponentialRampToValueAtTime(500,t+1.15);f.Q.value=2.5;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.18,t+.08);g.gain.setValueAtTime(.13,t+.7);g.gain.exponentialRampToValueAtTime(.0001,t+1.2);o.connect(f);f.connect(g);g.connect(c.destination);o.start();o.stop(t+1.22);o.onended=()=>c.close()}catch(e){}
+}
+let errors=0;
+document.getElementById('form').addEventListener('submit',e=>{e.preventDefault();const val=document.getElementById('answer').value.trim().toLocaleLowerCase('es');if(val==='hueco'){status.textContent='PALABRA ACEPTADA. ALGO SE HA ABIERTO.';document.getElementById('unlock').classList.add('show');document.getElementById('answer').disabled=true;e.target.querySelector('button').disabled=true}else{errors++;document.body.classList.remove('attack');void document.body.offsetWidth;document.body.classList.add('attack');scream();status.textContent=errors===1?'ERROR. EL SISTEMA HA IMITADO UN GRITO. NO LE CREAS.':'ERROR REPETIDO. EL SISTEMA QUIERE QUE TE ASUSTES.';setTimeout(()=>document.body.classList.remove('attack'),1500)}});
+})();
+</script>
+</body>
+</html>

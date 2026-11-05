@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CORAL.EXE — Fase 2: El manglar</title>
+<style>
+:root{--bg:#090d0a;--panel:#101610;--moss:#66734a;--paper:#c8c5a5;--red:#7d171d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--paper);font-family:Georgia,"Times New Roman",serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:10;opacity:.18;background:repeating-linear-gradient(0deg,transparent 0 3px,#000 4px 5px)}
+main{max-width:1050px;margin:auto;padding:1rem;position:relative}
+header{display:flex;justify-content:space-between;gap:1rem;align-items:center;border-bottom:1px solid #30392b;padding:.6rem 0 1rem}
+.kicker{font: .72rem monospace;letter-spacing:.2em;color:#84916b}
+h1{font-weight:normal;letter-spacing:.14em;font-size:clamp(1.6rem,5vw,2.6rem);margin:.35rem 0}
+header p{font: .72rem monospace;color:#727b60;margin:0}
+#status{font:.72rem monospace;line-height:1.7;text-align:right;color:#a3ac86}
+.scene{height:420px;margin-top:1rem;position:relative;overflow:hidden;border:1px solid #263126;background:radial-gradient(ellipse at 50% 48%,#273324 0,#111811 45%,#060806 100%)}
+.mist{position:absolute;inset:-10%;background:radial-gradient(ellipse at 25% 70%,#35412a44,transparent 42%),radial-gradient(ellipse at 78% 35%,#64181c25,transparent 34%);animation:mist 8s ease-in-out infinite alternate}
+@keyframes mist{to{transform:translate(3%,-2%) scale(1.08);filter:blur(7px)}}
+.water{position:absolute;bottom:0;left:0;right:0;height:26%;background:linear-gradient(transparent,#172117 45%,#050705);border-top:1px solid #34402e}
+.root{position:absolute;top:-5%;height:110%;width:13%;border-radius:45%;background:linear-gradient(90deg,#15170f,#4a4029 48%,#15170f);filter:drop-shadow(0 0 8px #000)}
+.root:after{content:"";position:absolute;left:48%;top:0;height:100%;width:2px;background:#6d302b;opacity:.65;box-shadow:0 0 7px #6d302b}
+.r1{left:5%;transform:rotate(13deg)}.r2{left:25%;transform:rotate(-13deg)}.r3{right:20%;transform:rotate(12deg)}.r4{right:3%;transform:rotate(-15deg)}
+.branch{position:absolute;left:8%;top:25%;width:38%;height:13px;border-radius:50%;background:linear-gradient(#171a11,#4a402a,#11140e);transform:rotate(25deg)}
+.branch.b2{left:58%;top:20%;transform:rotate(150deg);width:35%}
+.hotspot{position:absolute;border:0;color:#d0cfad;background:transparent;padding:0;text-transform:none;letter-spacing:0}
+.hotspot small{display:block;font:.65rem monospace;color:#a3ae82;opacity:0;transition:opacity .2s;white-space:nowrap}
+.hotspot:hover small,.hotspot:focus-visible small{opacity:1}
+.hotspot:focus-visible{outline:1px dashed #b7c38b}
+#rootSpot{left:16%;bottom:9%;width:72px;height:125px;border-radius:40% 55% 20% 30%;background:linear-gradient(90deg,#1a1b12,#54452e,#1b1b13);transform:rotate(-14deg)}
+#rootSpot small{position:absolute;bottom:-22px;left:-8px}
+#waterSpot{left:44%;bottom:13%;width:12%;height:15%;border-radius:50%;border-bottom:2px solid #394734}
+#mouthSpot{left:46%;top:37%;width:100px;height:68px;border-radius:50%;border:1px solid #4c2422;background:radial-gradient(ellipse,#020202 0 23%,#321312 25% 46%,#11130e 65%);box-shadow:0 0 18px #5e111133;transform:rotate(-9deg);transition:.2s}
+#mouthSpot:before{content:"";position:absolute;inset:13px 14px;border-top:3px solid #6e3530;border-bottom:2px solid #6e3530;border-radius:50%}
+#mouthSpot:after{content:"";position:absolute;left:25px;right:25px;top:26px;height:4px;background:#b2a88d;opacity:.8;clip-path:polygon(0 0,100% 0,80% 100%,20% 100%)}
+#mouthSpot.open{transform:rotate(4deg) scale(1.2);background:radial-gradient(ellipse,#000 0 50%,#811b20 53% 70%,#15100e 73%);box-shadow:0 0 30px #a21d2c}
+.panel{border:1px solid #30392b;background:var(--panel);padding:1rem;margin-top:1rem}
+.panel h2{font-weight:normal;font-size:1rem;letter-spacing:.12em;margin:0 0 .7rem}
+#log{min-height:2.7em;color:#9ea789;font:.88rem/1.5 monospace}
+.controls{display:flex;flex-wrap:wrap;gap:.55rem;align-items:center}
+button,input{font:inherit}
+button{cursor:pointer;color:var(--paper);background:#111811;border:1px solid #5e6a49;padding:.65rem .8rem;letter-spacing:.06em;text-transform:uppercase}
+button:hover,button:focus-visible{background:#283226;border-color:#a3b17a;outline:none}
+button:disabled{opacity:.35;cursor:not-allowed}
+input{background:#050705;color:#d6d6bc;border:1px solid #526044;padding:.7rem;min-width:0;flex:1;letter-spacing:.08em;text-transform:uppercase}
+#memoryPanel{display:none}
+#soundButtons{margin:.8rem 0}
+.pulse{display:inline-block;border:1px solid #49513b;padding:.55rem .7rem;color:#b6bd99;font:.8rem monospace;min-width:2.4rem;text-align:center;margin:.2rem}
+.pulse.active{background:#6b1b20;border-color:#c34c4e;color:white}
+#reveal{display:none;border:1px solid #743236;background:#140b0b;padding:1rem;margin-top:1rem;line-height:1.7}
+#reveal.show{display:block}
+#hiddenMessage{color:#d4cdb4}
+#exitPanel{display:none;margin-top:1rem}
+.glitch{animation:glitch .14s steps(2,end) 8}
+@keyframes glitch{0%{transform:translate(0);filter:none}25%{transform:translate(7px,-2px);filter:hue-rotate(100deg) contrast(2)}50%{transform:translate(-6px,2px);filter:invert(.8)}75%{transform:translate(3px,1px);filter:blur(1px)}100%{transform:translate(0);filter:none}}
+.redflash{animation:redflash .22s steps(2,end) 5}
+@keyframes redflash{50%{background:#700c14;filter:contrast(2)}}
+.locked{opacity:.25!important;filter:blur(2px);pointer-events:none!important}
+footer{font:.7rem/1.6 monospace;color:#555e4c;margin:1rem 0 2rem}
+@media(max-width:600px){.scene{height:360px}#mouthSpot{left:39%;top:37%;width:85px;height:58px}header{align-items:flex-start;flex-direction:column}#status{text-align:left}}
+</style>
+</head>
+<body>
+<main id="app">
+<header>
+ <div><div class="kicker">CORAL.EXE / REGISTRO 02</div><h1>EL MANGLAR</h1><p>NO CONFÍES EN LO QUE IMITA UNA VOZ.</p></div>
+ <div id="status">ESTADO: OBSERVANDO<br>ERRORES: 0</div>
+</header>
+<section class="scene" id="scene" aria-label="Manglar interactivo">
+ <div class="mist"></div><div class="root r1"></div><div class="root r2"></div><div class="root r3"></div><div class="root r4"></div><div class="branch"></div><div class="branch b2"></div><div class="water"></div>
+ <button class="hotspot" id="rootSpot" aria-label="Examinar raíz"><small>la raíz parece recordar algo</small></button>
+ <button class="hotspot" id="waterSpot" aria-label="Escuchar el agua"><small>escuchar</small></button>
+ <button class="hotspot" id="mouthSpot" aria-label="Examinar la boca"><small>una boca sin rostro</small></button>
+</section>
+<section class="panel">
+ <h2>REGISTRO DEL SISTEMA</h2><div id="log" aria-live="polite">El agua está quieta. Explora el lugar. No todo lo que parece vivo está vivo.</div>
+ <div class="controls"><button id="soundToggle">Activar sonido</button><button id="listenBtn">Escuchar secuencia</button><button id="resetSequenceBtn" disabled>Reiniciar intento</button></div>
+ <div id="memoryPanel"><p>Escucha los seis sonidos y después selecciónalos en el mismo orden. La boca no habla: imita sílabas con gritos.</p><div id="sequence"></div><div class="controls" id="soundButtons"></div><p id="attemptInfo" class="kicker">ESCUCHA LA SECUENCIA</p></div>
+</section>
+<section class="panel">
+ <h2>TECLADO DE ACCESO</h2>
+ <p style="color:#7f896b;line-height:1.5">La boca te entrega una frase fonética. Escríbela para abrir el paso. Si la escribes al revés, quizá escuches algo que no estaba destinado a ti.</p>
+ <form id="codeForm" class="controls"><input id="codeInput" autocomplete="off" spellcheck="false" aria-label="Código de acceso" placeholder="introduce el código..."><button type="submit">Comprobar</button></form>
+ <div id="reveal"><div class="kicker">ARCHIVO INVERTIDO / CONTENIDO NO VERIFICADO</div><p id="hiddenMessage"></p><p class="kicker">PISTA VISUAL: ISLA CALOR</p></div>
+ <div id="exitPanel"><p style="color:#c6c5a5">ACCESO CONCEDIDO. La boca ha dejado de gritar.</p><button id="continueBtn">Entrar en organismo.html →</button><p style="font:.7rem monospace;color:#6c7659">Este botón abre el archivo de la fase 3. Guarda este archivo junto a organismo.html.</p></div>
+</section>
+<footer>NO HAY NADIE DEBAJO DEL AGUA. NO HAY NADIE DEBAJO DEL AGUA. NO HAY NADIE DEBAJO DEL AGUA.</footer>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id), log=$('log'),scene=$('scene'),mouth=$('mouthSpot');
+let audioCtx=null,soundOn=false,errors=0,discovered=false,sequencePlayed=false,unlocked=false,expected=[],entered=[],lockedUntil=0;
+const hiddenText='Su carcasa intangible tomo lo suyo y se enfrió, ya frio les mostró un rostro amigable y los consoló, pero aunque trague lo vivo, nunca será humano, no lo sabrás cuando estés en esa cara';
+const tones=[196,247,294,370,440,155];
+const labels=['Pulso grave','Chasquido','Voz rota','Burbuja','Grito corto','Aire'];
+function say(t){log.textContent=t}
+function status(){ $('status').innerHTML=`ESTADO: ${unlocked?'PASO ABIERTO':errors>=3?'HOSTIL':'OBSERVANDO'}<br>ERRORES: ${errors}` }
+async function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')await audioCtx.resume();return audioCtx}
+function tone(freq,duration=.22,type='sine',volume=.07){if(!soundOn)return;initAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(volume,audioCtx.currentTime+.025);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration+.03)}
+function scream(){if(!soundOn)return;initAudio();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(180,audioCtx.currentTime);o.frequency.linearRampToValueAtTime(780,audioCtx.currentTime+.23);o.frequency.linearRampToValueAtTime(95,audioCtx.currentTime+.72);g.gain.setValueAtTime(.001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.17,audioCtx.currentTime+.05);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.75);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.78)}
+function attack(){errors++;status();scene.classList.remove('glitch','redflash');void scene.offsetWidth;scene.classList.add('glitch','redflash');document.body.classList.add('redflash');setTimeout(()=>document.body.classList.remove('redflash'),1100);scream();mouth.classList.add('open');setTimeout(()=>mouth.classList.remove('open'),850);if(errors>=3){lockedUntil=Date.now()+4500;$('rootSpot').classList.add('locked');$('waterSpot').classList.add('locked');say('La boca grita. Las raíces se cierran unos segundos. La piedra sigue ahí.');setTimeout(()=>{$('rootSpot').classList.remove('locked');$('waterSpot').classList.remove('locked');if(!unlocked)say('Las raíces vuelven a moverse. No confundas el silencio con seguridad.')},4600)}else say('INCORRECTO. El sistema imita un grito para que obedezcas.')}
+$('soundToggle').onclick=async()=>{soundOn=!soundOn;$('soundToggle').textContent=soundOn?'Silenciar sonido':'Activar sonido';if(soundOn){await initAudio();tone(220,.12);say('Sonido activado. Los sonidos se generan en el navegador; no necesitas archivos externos.')}else say('Sonido desactivado. Puedes continuar sin audio.')};
+$('rootSpot').onclick=()=>{if(Date.now()<lockedUntil)return;discovered=true;tone(294,.16);say('La raíz late bajo la corteza. La boca parece reaccionar cuando te acercas.');};
+$('waterSpot').onclick=()=>{if(Date.now()<lockedUntil)return;tone(155,.35,'triangle',.05);say('El agua devuelve un sonido hueco. Algo contesta desde las raíces.')};
+$('mouthSpot').onclick=()=>{if(!discovered){say('La boca se abre, pero no revela nada. Primero examina las raíces.');mouth.classList.add('open');scream();setTimeout(()=>mouth.classList.remove('open'),800);return}$('memoryPanel').style.display='block';makeSequence();playSequence()};
+function makeSequence(){expected=[2,0,4,1,5,3];entered=[];sequencePlayed=false;$('sequence').innerHTML='';$('soundButtons').innerHTML='';for(let i=0;i<6;i++){const s=document.createElement('span');s.className='pulse';s.id='p'+i;s.textContent='?';$('sequence').appendChild(s)}labels.forEach((label,i)=>{const b=document.createElement('button');b.textContent=label;b.onclick=()=>{if(!sequencePlayed||entered.length>=6||unlocked)return;entered.push(i);tone(tones[i],i===5?.32:.2,i===4?'sawtooth':'sine');const s=$('p'+(entered.length-1));s.textContent=label;s.classList.add('active');if(entered.length===6){$('resetSequenceBtn').disabled=false;const good=entered.every((v,j)=>v===expected[j]);if(good){$('attemptInfo').textContent='SECUENCIA CORRECTA';say('La boca deja escapar los fragmentos: TE / A / HO / GA / RÁS. Ahora introduce TE AHOGARAS en el teclado.');$('codeInput').value='TE AHOGARAS';mouth.classList.remove('open')}else{$('attemptInfo').textContent='SECUENCIA INCORRECTA';say('No. La boca se equivoca a propósito o tú la escuchaste mal.');attack()}}};$('soundButtons').appendChild(b)})}
+async function playSequence(){if(!soundOn){say('Activa el sonido para escuchar la secuencia.');return}await initAudio();if(!$('memoryPanel').style.display||$('memoryPanel').style.display==='none'){$('memoryPanel').style.display='block';makeSequence()}entered=[];sequencePlayed=false;$('resetSequenceBtn').disabled=true;$('attemptInfo').textContent='ESCUCHA CON ATENCIÓN';for(let i=0;i<6;i++){$('p'+i).textContent='?';$('p'+i).classList.remove('active')}expected.forEach((idx,pos)=>setTimeout(()=>{if(!soundOn)return;tone(tones[idx],idx===5?.34:.25,idx===4?'sawtooth':'sine',.075);mouth.classList.add('open');setTimeout(()=>mouth.classList.remove('open'),220);if(pos===expected.length-1)setTimeout(()=>{sequencePlayed=true;$('attemptInfo').textContent='AHORA REPRODUCE LOS SONIDOS'},400)},pos*650));say('Escucha sin mirar. La boca está imitando una voz humana.')}
+$('listenBtn').onclick=()=>{if(!discovered){say('Primero explora la raíz. Algo parece despertar debajo de la corteza.');tone(130,.12);return}if(!$('memoryPanel').style.display||$('memoryPanel').style.display==='none'){$('memoryPanel').style.display='block';makeSequence()}playSequence()};
+$('resetSequenceBtn').onclick=()=>{entered=[];sequencePlayed=true;for(let i=0;i<6;i++){$('p'+i).textContent='?';$('p'+i).classList.remove('active')} $('attemptInfo').textContent='VUELVE A ELEGIR LOS SEIS SONIDOS';$('resetSequenceBtn').disabled=true;say('Intenta de nuevo. Selecciona los seis sonidos en el orden que escuchaste.')};
+$('codeForm').onsubmit=e=>{e.preventDefault();const raw=$('codeInput').value.toLocaleUpperCase('es-MX').replace(/[^A-ZÁÉÍÓÚÜÑ]/g,'');const v=raw.normalize('NFD').replace(/[\u0300-\u036f]/g,'');if(v==='TEAHOGARAS'){unlocked=true;$('exitPanel').style.display='block';$('reveal').classList.remove('show');status();say('ACCESO CONCEDIDO. La frase ha abierto una grieta en el manglar.');mouth.classList.remove('open');tone(523,.4,'triangle')}else if(v==='SARAGOHAET'){$('hiddenMessage').textContent=hiddenText;$('reveal').classList.add('show');say('El código invertido no abre la puerta. Abre un recuerdo que la boca no quería pronunciar.');scream()}else{attack();say('El código no coincide. La boca grita para enseñarte a temerle al error.')}};
+$('continueBtn').onclick=()=>{window.location.href='organismo.html'};
+status();
+})();
+</script>
+</body>
+</html>
